@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDataCoin", "MyDataCoin\MyDataCoin.csproj", "{17946292-2259-4FB2-A02D-F0F933B6A5E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17946292-2259-4FB2-A02D-F0F933B6A5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17946292-2259-4FB2-A02D-F0F933B6A5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17946292-2259-4FB2-A02D-F0F933B6A5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17946292-2259-4FB2-A02D-F0F933B6A5E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B34D319-AC28-48E2-9C74-A5870CBE060A}
+	EndGlobalSection
+EndGlobal
