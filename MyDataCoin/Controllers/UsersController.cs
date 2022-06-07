@@ -152,21 +152,22 @@ namespace NuzaiCore.Controllers.v2
 
 
         /// <summary>
-        /// Get Balance and info about Unread notifications
+        /// Add rewards to users who input promo code
         /// </summary>
-        /// <response code="200">Returns Ok</response>
+        /// <response code="200">Returns Success</response>
         /// <response code="400">Returns Bad Request</response>
         /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(MainInfo))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [Authorize]
-        [HttpGet]
-        [Route("main_info/{userid}")]
-        public async Task<IActionResult> GetInfoForMain(string userid)
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
+        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
+        [HttpGet("promo/{userid}/{promo}")]
+        public async Task<IActionResult> InsertPromo(string userid, string promo)
         {
-            MainInfo response = await _userService.GetInfoForMain(userid);
-            return Ok(response);
+            var result = await _userService.InsertPromo(userid, promo);
+            if (result.Code != 200) return StatusCode(result.Code, new GeneralResponse(result.Code, result.Message));
+            else return Ok(new GeneralResponse(result.Code, result.Message));
         }
 
 

@@ -17,7 +17,8 @@ namespace MyDataCoin.Interfaces
 
         Task<GeneralResponse> Mapping(string userid, AuthenticateRequest model);
 
-        Task<MainInfo> GetInfoForMain(string id);
+        Task<GeneralResponse> InsertPromo(string userid, string promo);
+
 
 
         UserRefreshTokens AddUserRefreshTokens(UserRefreshTokens user);

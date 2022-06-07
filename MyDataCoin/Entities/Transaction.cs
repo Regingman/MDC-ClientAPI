@@ -1,24 +1,27 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace MyDataCoin.Entities
 {
     public class Transaction
     {
-        public Transaction(string txid, string from, string to, double amount, double amountInUsd, DateTime txDate, int direction)
-        {
-            TxId = txid;
-            From = from;
-            To = to;
-            Amount = amount;
-            AmountInUsd = amountInUsd;
-            TxDate = txDate;
-            Direction = direction;
-        }
+        //public Transaction(Guid txid, Guid from, Guid to, double amount, double amountInUsd, DateTime txDate, int direction)
+        //{
+        //    TxId = txid;
+        //    From = from;
+        //    To = to;
+        //    Amount = amount;
+        //    AmountInUsd = amountInUsd;
+        //    TxDate = txDate;
+        //    Direction = direction;
+        //}
 
-        public string TxId { get; set; }
+        [Key]
+        public Guid TxId { get; set; }
 
-        public string From { get; set; }
+        public Guid From { get; set; }
 
-        public string To { get; set; }
+        public Guid To { get; set; }
 
         public double Amount { get; set; }
 

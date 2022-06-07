@@ -61,7 +61,7 @@ namespace MyDataCoin.Services
 
 		public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
 		{
-			var Key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("DB_CONNECTION"));
+			var Key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY"));
 
 			var tokenValidationParameters = new TokenValidationParameters
 			{

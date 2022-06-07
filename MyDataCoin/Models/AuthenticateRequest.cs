@@ -19,5 +19,8 @@ namespace MyDataCoin.Models
 
         [Required(ErrorMessage = "Sosial Network name required")]
         public string SocialNetwork { get; set; }
+
+        [Required(ErrorMessage = "Device Id cannot be null")]
+        public string DeviceId { get; set; }
     }
 }

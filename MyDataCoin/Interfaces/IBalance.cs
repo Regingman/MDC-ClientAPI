@@ -8,7 +8,7 @@ namespace MyDataCoin.Interfaces
     {
         Task<GeneralResponse> GetBalance(string userid);
 
-        List<Entities.Transaction> GetTransactions(string id);
+        Task<List<Entities.Transaction>> GetTransactions(string id);
 
         Task<GeneralResponse> AddToBalance(string id, double amount);
     }

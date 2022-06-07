@@ -13,7 +13,9 @@ namespace MyDataCoin.DataAccess
 
         public DbSet<Email> Emails { get; set; }
 
-        public DbSet<EmailCodeDictionary> EmailCodeDictionaries { get; set; }
+        //public DbSet<EmailCodeDictionary> EmailCodeDictionaries { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
 
         public virtual DbSet<UserRefreshTokens> UserRefreshToken { get; set; }
     }

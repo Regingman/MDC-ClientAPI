@@ -67,7 +67,7 @@ namespace MyDataCoin.Controllers
         [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("add_to_balance/{userid}/amount/{amount}")]
         public async Task<IActionResult> Earn(string userid, double amount)
         {

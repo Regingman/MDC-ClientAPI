@@ -75,7 +75,9 @@ namespace MyDataCoin.Services
                     user.Id = Guid.NewGuid();
                     user.NickName = model.NickName;
                     user.CreatedAt = DateTime.UtcNow;
+                    user.DeviceId = model.DeviceId;
                     user.Balance = 0;
+                    user.RefCode = GeneratePromoCode(8);
 
                     await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
@@ -268,10 +270,64 @@ namespace MyDataCoin.Services
         }
 
 
-        public async Task<MainInfo> GetInfoForMain(string id)
+        public async Task<GeneralResponse> InsertPromo(string userid, string promo)
         {
-            Entities.User existingUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == Guid.Parse(id));
-            return new MainInfo(existingUser.Balance, true);
+            Entities.User newUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == Guid.Parse(userid));
+            Entities.User invitingUser = await _db.Users.FirstOrDefaultAsync(u => u.RefCode == promo);
+            Entities.User mdcWallet = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse("21d2c0d3-ec2c-4601-9b19-df7ac7aa2da5"));
+
+            if (invitingUser == null) return new GeneralResponse(400, "Invalid Promo Code");
+            else
+            {
+                if (mdcWallet.Balance < 100) return new GeneralResponse(400, "Not enough funds in MDC marketing wallet");
+                else
+                {
+                    newUser.CameFrom = promo;
+                    mdcWallet.Balance -= 5.0;
+                    invitingUser.Balance += 2.5;
+                    newUser.Balance += 2.5;
+
+                    Entities.Transaction transaction = new
+                            Entities.Transaction()
+                    {
+                        TxId = Guid.NewGuid(),
+                        From = mdcWallet.Id,
+                        To = newUser.Id,
+                        Amount = 2.5,
+                        AmountInUsd = 2.5 - 0.5,
+                        TxDate = DateTime.Now,
+                        Direction = 2
+                    };
+
+                    Entities.Transaction transaction2 = new
+                            Entities.Transaction()
+                    {
+                        TxId = Guid.NewGuid(),
+                        From = mdcWallet.Id,
+                        To = invitingUser.Id,
+                        Amount = 2.5,
+                        AmountInUsd = 2.5 - 0.5,
+                        TxDate = DateTime.Now,
+                        Direction = 2
+                    };
+
+                    await _db.Transactions.AddAsync(transaction);
+                    await _db.Transactions.AddAsync(transaction2);
+                    await _db.SaveChangesAsync();
+
+                    return new GeneralResponse(200, "Success");
+                }
+            }
+
+        }
+
+        private string GeneratePromoCode(int length)
+        {
+            Random random = new Random();
+            const string chars = "0123456789ABCDEFGHIJKLMNOPRSTUVWXYZ";
+
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

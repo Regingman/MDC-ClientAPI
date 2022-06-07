@@ -29,10 +29,12 @@ namespace MyDataCoin.Entities
 
         public string WalletAddress { get; set; }
 
-        [JsonIgnore]
         public string RefCode { get; set; }
 
         [JsonIgnore]
         public string CameFrom { get; set; }
+
+        [JsonIgnore]
+        public string DeviceId { get; set; }
     }
 }
