@@ -5,16 +5,10 @@ namespace MyDataCoin.Entities
 {
     public class Transaction
     {
-        //public Transaction(Guid txid, Guid from, Guid to, double amount, double amountInUsd, DateTime txDate, int direction)
-        //{
-        //    TxId = txid;
-        //    From = from;
-        //    To = to;
-        //    Amount = amount;
-        //    AmountInUsd = amountInUsd;
-        //    TxDate = txDate;
-        //    Direction = direction;
-        //}
+        /// <summary>
+        /// Directions: 1 - Send, 2 - Receive
+        /// Types: 1 - Ads, 2 - Refferal, 3 - Normal transaction
+        /// </summary>
 
         [Key]
         public Guid TxId { get; set; }
@@ -30,5 +24,7 @@ namespace MyDataCoin.Entities
         public DateTime TxDate { get; set; }
 
         public int Direction { get; set; }
+
+        public int Type { get; set; }
     }
 }

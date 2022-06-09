@@ -31,11 +31,11 @@ namespace MyDataCoin.Services
             else return await _db.Transactions.Where(x => x.TxId == user.Id).ToListAsync();
         }
 
-        public async Task<GeneralResponse> AddToBalance(string id, double amount)
+        public async Task<GeneralResponse> AddToBalance(string userid, double amount)
         {
             try
             {
-                Guid guid = Guid.Parse(id);
+                Guid guid = Guid.Parse(userid);
                 var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == guid);
                 var mdcWallet = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse("21d2c0d3-ec2c-4601-9b19-df7ac7aa2da5"));
                 if (mdcWallet.Balance < 100) return new GeneralResponse(400, "Not enough funds in MDC marketing wallet");
@@ -46,8 +46,7 @@ namespace MyDataCoin.Services
                         mdcWallet.Balance -= amount;
                         user.Balance = user.Balance += amount;
 
-                        Entities.Transaction transaction = new
-                            Entities.Transaction()
+                        Entities.Transaction transaction = new Entities.Transaction()
                         {
                             TxId = Guid.NewGuid(),
                             From = mdcWallet.Id,
@@ -55,7 +54,8 @@ namespace MyDataCoin.Services
                             Amount = amount,
                             AmountInUsd = amount - 0.5,
                             TxDate = DateTime.Now,
-                            Direction = 2
+                            Direction = 2,
+                            Type = 1
                         };
 
                         await _db.AddAsync(transaction);

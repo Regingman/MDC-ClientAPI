@@ -22,5 +22,8 @@ namespace MyDataCoin.Models
 
         [Required(ErrorMessage = "Device Id cannot be null")]
         public string DeviceId { get; set; }
+
+        [Required(ErrorMessage = "FCMToken cannot be null")]
+        public string FCMToken { get; set; }
     }
 }

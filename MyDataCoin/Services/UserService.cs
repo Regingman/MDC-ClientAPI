@@ -78,6 +78,7 @@ namespace MyDataCoin.Services
                     user.DeviceId = model.DeviceId;
                     user.Balance = 0;
                     user.RefCode = GeneratePromoCode(8);
+                    user.FCMToken = model.FCMToken;
 
                     await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
@@ -236,7 +237,7 @@ namespace MyDataCoin.Services
 
         public void DeleteUserRefreshTokens(string socialId, string refreshToken)
         {
-            var item = _db.UserRefreshToken.FirstOrDefault(x => x.SocialId == socialId && x.RefreshToken == refreshToken);
+            UserRefreshTokens item = _db.UserRefreshToken.FirstOrDefault(x => x.SocialId == socialId && x.RefreshToken == refreshToken);
             if (item != null)
             {
                 _db.UserRefreshToken.Remove(item);
@@ -296,7 +297,8 @@ namespace MyDataCoin.Services
                         Amount = 2.5,
                         AmountInUsd = 2.5 - 0.5,
                         TxDate = DateTime.Now,
-                        Direction = 2
+                        Direction = 2,
+                        Type = 2
                     };
 
                     Entities.Transaction transaction2 = new
@@ -308,7 +310,8 @@ namespace MyDataCoin.Services
                         Amount = 2.5,
                         AmountInUsd = 2.5 - 0.5,
                         TxDate = DateTime.Now,
-                        Direction = 2
+                        Direction = 2,
+                        Type = 2
                     };
 
                     await _db.Transactions.AddAsync(transaction);
@@ -320,6 +323,16 @@ namespace MyDataCoin.Services
             }
 
         }
+
+        
+        public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
+            int refferedUsers = await _db.Users.Where(x => x.CameFrom == user.RefCode).CountAsync();
+            double refferedAmount = refferedUsers * 2.5;
+            return new StatisticsOfRefferedPeopleModel(refferedUsers, refferedAmount);
+        }
+
 
         private string GeneratePromoCode(int length)
         {

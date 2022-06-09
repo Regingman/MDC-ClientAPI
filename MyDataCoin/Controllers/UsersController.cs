@@ -172,6 +172,23 @@ namespace NuzaiCore.Controllers.v2
 
 
 
+        /// <summary>
+        /// Get statistics of reffered people and total rewards for inviting
+        /// </summary>
+        /// <response code="200">Returns Success</response>
+        /// <response code="400">Returns Bad Request</response>
+        /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="500">Returns Internal Server Error</response>
+        //[Authorize]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(StatisticsOfRefferedPeopleModel))]
+        [HttpGet("promo/get_statistics/{userid}")]
+        public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
+        {
+            return await _userService.GetRefferedPeople(userid);
+        }
+
+
+
 
 
         /// <summary>

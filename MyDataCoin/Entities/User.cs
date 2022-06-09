@@ -36,5 +36,8 @@ namespace MyDataCoin.Entities
 
         [JsonIgnore]
         public string DeviceId { get; set; }
+
+        [JsonIgnore]
+        public string FCMToken { get; set; }
     }
 }

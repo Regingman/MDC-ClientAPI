@@ -19,6 +19,8 @@ namespace MyDataCoin.Interfaces
 
         Task<GeneralResponse> InsertPromo(string userid, string promo);
 
+        Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid);
+
 
 
         UserRefreshTokens AddUserRefreshTokens(UserRefreshTokens user);
