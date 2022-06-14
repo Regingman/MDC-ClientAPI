@@ -38,7 +38,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [HttpGet]
         [Route("get_balance/{userid}")]
-        public async Task<IActionResult> GetBalance(string userid)
+        public IActionResult GetBalance(string userid)
         {
             return Ok();
         }

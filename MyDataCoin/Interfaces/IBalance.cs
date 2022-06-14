@@ -10,6 +10,12 @@ namespace MyDataCoin.Interfaces
 
         Task<List<Entities.Transaction>> GetTransactions(string id);
 
-        Task<GeneralResponse> AddToBalance(string id, double amount);
+        Task<GeneralResponse> AdvertisingRewards(string id);
+
+        Task<GeneralResponse> PromoCodeRewards(string userid, string promo);
+
+        Task<GeneralResponse> Send(SendModel model);
+
+        bool Validate(string address);
     }
 }

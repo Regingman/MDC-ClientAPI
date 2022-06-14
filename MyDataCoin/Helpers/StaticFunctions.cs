@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+
 namespace MyDataCoin.Helpers
 {
 	public static class StaticFunctions
@@ -20,6 +22,15 @@ namespace MyDataCoin.Helpers
             {
                 return false;
             }
+        }
+
+        public static string GeneratePromoCode(int length)
+        {
+            Random random = new Random();
+            const string chars = "0123456789ABCDEFGHIJKLMNOPRSTUVWXYZ";
+
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

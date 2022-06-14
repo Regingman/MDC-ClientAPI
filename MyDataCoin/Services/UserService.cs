@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyDataCoin.DataAccess;
 using MyDataCoin.Entities;
+using MyDataCoin.Helpers;
 using MyDataCoin.Interfaces;
 using MyDataCoin.Models;
 using System;
@@ -67,6 +68,9 @@ namespace MyDataCoin.Services
                 else
                 {
                     var user = new Entities.User();
+
+                    string walletAddress = $"mdc{StaticFunctions.GeneratePromoCode(17)}";
+
                     if (model.SocialNetwork == "meta") user.FacebookId = model.SocialId;
                     else if (model.SocialNetwork == "google") user.GoogleId = model.SocialId;
                     else if (model.SocialNetwork == "apple") user.AppleId = model.SocialId;
@@ -77,7 +81,8 @@ namespace MyDataCoin.Services
                     user.CreatedAt = DateTime.UtcNow;
                     user.DeviceId = model.DeviceId;
                     user.Balance = 0;
-                    user.RefCode = GeneratePromoCode(8);
+                    user.WalletAddress = walletAddress;
+                    user.RefCode = StaticFunctions.GeneratePromoCode(8);
                     user.FCMToken = model.FCMToken;
 
                     await _db.Users.AddAsync(user);
@@ -271,59 +276,6 @@ namespace MyDataCoin.Services
         }
 
 
-        public async Task<GeneralResponse> InsertPromo(string userid, string promo)
-        {
-            Entities.User newUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == Guid.Parse(userid));
-            Entities.User invitingUser = await _db.Users.FirstOrDefaultAsync(u => u.RefCode == promo);
-            Entities.User mdcWallet = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse("21d2c0d3-ec2c-4601-9b19-df7ac7aa2da5"));
-
-            if (invitingUser == null) return new GeneralResponse(400, "Invalid Promo Code");
-            else
-            {
-                if (mdcWallet.Balance < 100) return new GeneralResponse(400, "Not enough funds in MDC marketing wallet");
-                else
-                {
-                    newUser.CameFrom = promo;
-                    mdcWallet.Balance -= 5.0;
-                    invitingUser.Balance += 2.5;
-                    newUser.Balance += 2.5;
-
-                    Entities.Transaction transaction = new
-                            Entities.Transaction()
-                    {
-                        TxId = Guid.NewGuid(),
-                        From = mdcWallet.Id,
-                        To = newUser.Id,
-                        Amount = 2.5,
-                        AmountInUsd = 2.5 - 0.5,
-                        TxDate = DateTime.Now,
-                        Direction = 2,
-                        Type = 2
-                    };
-
-                    Entities.Transaction transaction2 = new
-                            Entities.Transaction()
-                    {
-                        TxId = Guid.NewGuid(),
-                        From = mdcWallet.Id,
-                        To = invitingUser.Id,
-                        Amount = 2.5,
-                        AmountInUsd = 2.5 - 0.5,
-                        TxDate = DateTime.Now,
-                        Direction = 2,
-                        Type = 2
-                    };
-
-                    await _db.Transactions.AddAsync(transaction);
-                    await _db.Transactions.AddAsync(transaction2);
-                    await _db.SaveChangesAsync();
-
-                    return new GeneralResponse(200, "Success");
-                }
-            }
-
-        }
-
         
         public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
         {
@@ -331,16 +283,6 @@ namespace MyDataCoin.Services
             int refferedUsers = await _db.Users.Where(x => x.CameFrom == user.RefCode).CountAsync();
             double refferedAmount = refferedUsers * 2.5;
             return new StatisticsOfRefferedPeopleModel(refferedUsers, refferedAmount);
-        }
-
-
-        private string GeneratePromoCode(int length)
-        {
-            Random random = new Random();
-            const string chars = "0123456789ABCDEFGHIJKLMNOPRSTUVWXYZ";
-
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
