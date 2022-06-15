@@ -34,13 +34,6 @@ namespace MyDataCoin
             var connectionString = DotNetEnv.Env.GetString("DB_CONNECTION", "Variable not found");
             services.AddDbContext<WebApiDbContext>(options => options.UseNpgsql(connectionString));
 
-
-            //services.AddIdentity<IdentityUser, IdentityRole>(options => {
-            //    options.Password.RequireUppercase = true; 
-            //    options.Password.RequireDigit = true;
-            //    options.SignIn.RequireConfirmedEmail = true;
-            //}).AddUserStore<WebApiDbContext>().AddDefaultTokenProviders();
-
             services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,7 +87,7 @@ namespace MyDataCoin
 
             services.AddScoped<IUser, UserService>();
             services.AddScoped<IBalance, BalanceService>();
-            services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddSingleton<IJWTManager, JWTManagerService>();
 
         }
 

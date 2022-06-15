@@ -112,7 +112,20 @@ namespace MyDataCoin.Services
             }    
         }
 
-        public async Task<bool> MakeTransfer(User from, User to, double amount, int type)
+       
+        public bool Validate(string address)
+        {
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+
+            if (address.Length < 20) return false;
+            if (address[0] != 'm' && address[1] != 'd' && address[2] != 'c') return false;
+            if (!regexItem.IsMatch(address)) return false;
+
+            return true;
+        }
+
+        //Helper method
+        private async Task<bool> MakeTransfer(User from, User to, double amount, int type)
         {
             Entities.Transaction transaction = new Entities.Transaction()
             {
@@ -129,17 +142,6 @@ namespace MyDataCoin.Services
 
             await _db.Transactions.AddAsync(transaction);
             await _db.SaveChangesAsync();
-            return true;
-        }
-
-        public bool Validate(string address)
-        {
-            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
-
-            if (address.Length < 20) return false;
-            if (address[0] != 'm' && address[1] != 'd' && address[2] != 'c') return false;
-            if (!regexItem.IsMatch(address)) return false;
-
             return true;
         }
     }

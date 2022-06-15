@@ -21,14 +21,14 @@ namespace MyDataCoin.Services
         private readonly WebApiDbContext _db;
         private readonly IConfiguration _conf;
         private readonly ILogger<UserService> _logger;
-        private readonly IJWTManagerRepository _jWTManager;
+        private readonly IJWTManager _jWTManager;
 
         private static string ApiKey = Environment.GetEnvironmentVariable("G_API_KEY");
         private static string Bucket = "mydatacoin.appspot.com";
         private static string AuthEmail = "img@gmail.com";
         private static string AuthPassword = Environment.GetEnvironmentVariable("G_API_PASSWORD");
 
-        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManagerRepository jWTManager)
+        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManager jWTManager)
         {
             _db = db;
             _conf = conf;
@@ -216,13 +216,15 @@ namespace MyDataCoin.Services
                 // error during upload will be thrown when you await the task
                 //Console.WriteLine("Download link:\n" + await task);
                 Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(model.UserId));
-                user.ProfilePic = task.TargetUrl;
+                
 
                 string add = $"?alt=media&token={Environment.GetEnvironmentVariable("G_IMAGE_TOKEN")}";
 
                 string[] words = task.TargetUrl.Split('?');
                 string[] words2 = words[1].Split('=');
                 string finalString = words[0] + "/" + words2[1] + add;
+
+                user.ProfilePic = finalString;
 
                 await _db.SaveChangesAsync();
                 return new GeneralResponse(200, finalString);

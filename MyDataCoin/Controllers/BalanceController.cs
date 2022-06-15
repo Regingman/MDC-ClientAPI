@@ -91,7 +91,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [HttpGet]
         [Route("advertising_rewards/{userid}")]
-        public async Task<IActionResult> Earn(string userid, double amount)
+        public async Task<IActionResult> Earn(string userid)
         {
             GeneralResponse response = await _BalanceService.AdvertisingRewards(userid);
 
@@ -168,7 +168,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(bool))]
         [HttpGet("validate/{address}")]
-        public async Task<IActionResult> Validate(string address)
+        public IActionResult Validate(string address)
         {
             if (string.IsNullOrEmpty(address)) return BadRequest("Address cannot be null");
             else

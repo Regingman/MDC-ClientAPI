@@ -9,9 +9,9 @@ using MyDataCoin.Interfaces;
 
 namespace MyDataCoin.Services
 {
-	public class JWTManagerRepository : IJWTManagerRepository
+	public class JWTManagerService : IJWTManager
 	{
-		public JWTManagerRepository()
+		public JWTManagerService()
 		{
 		}
 		public Tokens GenerateToken(string socialId)

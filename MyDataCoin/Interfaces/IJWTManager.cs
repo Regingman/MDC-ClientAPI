@@ -3,7 +3,7 @@ using MyDataCoin.Entities;
 
 namespace MyDataCoin.Interfaces
 {
-    public interface IJWTManagerRepository
+    public interface IJWTManager
     {
         Tokens GenerateToken(string socialId);
 
