@@ -97,7 +97,7 @@ namespace MyDataCoin.Services
         public async Task<GeneralResponse> Send(SendModel model)
         {
             var userFrom = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressFrom);
-            var userTo = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressFrom);
+            var userTo = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressTo);
 
             if (userFrom == null || userTo == null) return new GeneralResponse(421, "User Not Found");
             else
