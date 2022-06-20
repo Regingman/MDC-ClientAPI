@@ -28,15 +28,22 @@ namespace MyDataCoin.Services
 
         public async Task<List<Entities.Transaction>> GetTransactions(string userid)
         {
+            List<Transaction> result = new List<Transaction>();
             var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
             if (user == null) return new List<Entities.Transaction>();
             else
             {
                 List<Transaction> res = await _db.Transactions
                     .Where(x => x.From == user.WalletAddress)
+                    .ToListAsync();
+                result.AddRange(res);
+
+                List<Transaction> res2 = await _db.Transactions
                     .Where(y => y.To == user.WalletAddress)
                     .ToListAsync();
-                return res;
+                result.AddRange(res2);
+
+                return result;
             }
         }
 

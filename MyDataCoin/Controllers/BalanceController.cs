@@ -62,7 +62,7 @@ namespace MyDataCoin.Controllers
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        //[Authorize]
+        [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Entities.Transaction>))]
         [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpGet("transactions/{userid}")]
