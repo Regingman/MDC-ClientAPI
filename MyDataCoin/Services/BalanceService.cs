@@ -30,7 +30,14 @@ namespace MyDataCoin.Services
         {
             var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
             if (user == null) return new List<Entities.Transaction>();
-            else return await _db.Transactions.Where(x => x.TxId == user.Id).ToListAsync();
+            else
+            {
+                List<Transaction> res = await _db.Transactions
+                    .Where(x => x.From == user.WalletAddress)
+                    .Where(y => y.To == user.WalletAddress)
+                    .ToListAsync();
+                return res;
+            }
         }
 
         public async Task<GeneralResponse> AdvertisingRewards(string userid)
