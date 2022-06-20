@@ -127,22 +127,29 @@ namespace MyDataCoin.Services
         //Helper method
         private async Task<bool> MakeTransfer(User from, User to, double amount, int type)
         {
-            Entities.Transaction transaction = new Entities.Transaction()
+            try
             {
-                TxId = Guid.NewGuid(),
-                From = from.WalletAddress,
-                To = to.WalletAddress,
-                Amount = amount,
-                TxDate = DateTime.Now,
-                Type = type
-            };
+                Entities.Transaction transaction = new Entities.Transaction()
+                {
+                    TxId = Guid.NewGuid(),
+                    From = from.WalletAddress,
+                    To = to.WalletAddress,
+                    Amount = amount,
+                    TxDate = DateTime.Now,
+                    Type = type
+                };
 
-            from.Balance -= amount;
-            to.Balance += amount;
+                from.Balance -= amount;
+                to.Balance += amount;
 
-            await _db.Transactions.AddAsync(transaction);
-            await _db.SaveChangesAsync();
-            return true;
+                _db.Transactions.Add(transaction);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
