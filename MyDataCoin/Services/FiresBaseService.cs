@@ -12,9 +12,24 @@ namespace MyDataCoin.Services
     public class FiresBaseService : IFireBase
     {
         private readonly IUser _userService;
+        private readonly FirebaseApp _firebaseApp;
+        private readonly FirebaseMessaging _firebaseMessaging;
         public FiresBaseService(IUser userService)
         {
             _userService = userService;
+            if (_firebaseApp != null)
+            {
+                var json = DotNetEnv.Env.GetString("FCM_CONFIGURATION", "Variable not found");
+                _firebaseApp = FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.FromJson(json)
+                    .CreateScoped("https://www.googleapis.com/auth/firebase.messaging")
+                });
+                if (_firebaseMessaging != null)
+                {
+                    _firebaseMessaging = FirebaseMessaging.GetMessaging(_firebaseApp);
+                }
+            }
         }
 
         private async Task<Message> CreateNotificationAsync(FCMMessage message)
@@ -35,18 +50,13 @@ namespace MyDataCoin.Services
         {
             try
             {
+
                 var messageFCM = await CreateNotificationAsync(message);
                 if (messageFCM == null)
                 {
                     return new AuthenticateResponse(421, "User not found from this user id!");
                 }
-                var app = FirebaseApp.Create(new AppOptions()
-                {
-                    Credential = GoogleCredential.FromFile("data_coin.json")
-                    .CreateScoped("https://www.googleapis.com/auth/firebase.messaging")
-                });
-                var messaging = FirebaseMessaging.GetMessaging(app);
-                var result = await messaging.SendAsync(messageFCM);
+                var result = await _firebaseMessaging.SendAsync(messageFCM);
                 return new AuthenticateResponse(200, "Success");
             }
             catch (Exception ex)
