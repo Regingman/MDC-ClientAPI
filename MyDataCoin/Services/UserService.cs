@@ -9,6 +9,7 @@ using MyDataCoin.Helpers;
 using MyDataCoin.Interfaces;
 using MyDataCoin.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -21,14 +22,14 @@ namespace MyDataCoin.Services
         private readonly WebApiDbContext _db;
         private readonly IConfiguration _conf;
         private readonly ILogger<UserService> _logger;
-        private readonly IJWTManager _jWTManager;
+        private readonly IJWTManagerRepository _jWTManager;
 
         private static string ApiKey = Environment.GetEnvironmentVariable("G_API_KEY");
         private static string Bucket = "mydatacoin.appspot.com";
         private static string AuthEmail = "img@gmail.com";
         private static string AuthPassword = Environment.GetEnvironmentVariable("G_API_PASSWORD");
 
-        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManager jWTManager)
+        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManagerRepository jWTManager)
         {
             _db = db;
             _conf = conf;
@@ -216,15 +217,13 @@ namespace MyDataCoin.Services
                 // error during upload will be thrown when you await the task
                 //Console.WriteLine("Download link:\n" + await task);
                 Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(model.UserId));
-                
+                user.ProfilePic = task.TargetUrl;
 
                 string add = $"?alt=media&token={Environment.GetEnvironmentVariable("G_IMAGE_TOKEN")}";
 
                 string[] words = task.TargetUrl.Split('?');
                 string[] words2 = words[1].Split('=');
                 string finalString = words[0] + "/" + words2[1] + add;
-
-                user.ProfilePic = finalString;
 
                 await _db.SaveChangesAsync();
                 return new GeneralResponse(200, finalString);
@@ -285,6 +284,18 @@ namespace MyDataCoin.Services
             int refferedUsers = await _db.Users.Where(x => x.CameFrom == user.RefCode).CountAsync();
             double refferedAmount = refferedUsers * 2.5;
             return new StatisticsOfRefferedPeopleModel(refferedUsers, refferedAmount);
+        }
+
+        public async Task<string> GetTokenFromUserId(string userId)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
+            return user.FCMToken;
+        }
+
+        public async Task<List<Entities.User>> GetAllUsersId()
+        {
+            var users = await _db.Users.ToListAsync();
+            return users;
         }
     }
 }

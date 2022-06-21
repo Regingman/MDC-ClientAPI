@@ -28,23 +28,9 @@ namespace MyDataCoin.Services
 
         public async Task<List<Entities.Transaction>> GetTransactions(string userid)
         {
-            List<Transaction> result = new List<Transaction>();
             var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
             if (user == null) return new List<Entities.Transaction>();
-            else
-            {
-                List<Transaction> res = await _db.Transactions
-                    .Where(x => x.From == user.WalletAddress)
-                    .ToListAsync();
-                result.AddRange(res);
-
-                List<Transaction> res2 = await _db.Transactions
-                    .Where(y => y.To == user.WalletAddress)
-                    .ToListAsync();
-                result.AddRange(res2);
-
-                return result;
-            }
+            else return await _db.Transactions.Where(x => x.TxId == user.Id).ToListAsync();
         }
 
         public async Task<GeneralResponse> AdvertisingRewards(string userid)
@@ -111,7 +97,7 @@ namespace MyDataCoin.Services
         public async Task<GeneralResponse> Send(SendModel model)
         {
             var userFrom = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressFrom);
-            var userTo = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressTo);
+            var userTo = await _db.Users.SingleOrDefaultAsync(x => x.WalletAddress == model.AddressFrom);
 
             if (userFrom == null || userTo == null) return new GeneralResponse(421, "User Not Found");
             else
@@ -126,7 +112,26 @@ namespace MyDataCoin.Services
             }    
         }
 
-       
+        public async Task<bool> MakeTransfer(User from, User to, double amount, int type)
+        {
+            Entities.Transaction transaction = new Entities.Transaction()
+            {
+                TxId = Guid.NewGuid(),
+                From = from.WalletAddress,
+                To = to.WalletAddress,
+                Amount = amount,
+                TxDate = DateTime.Now,
+                Type = type
+            };
+
+            from.Balance -= amount;
+            to.Balance += amount;
+
+            await _db.Transactions.AddAsync(transaction);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
         public bool Validate(string address)
         {
             var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
@@ -136,34 +141,6 @@ namespace MyDataCoin.Services
             if (!regexItem.IsMatch(address)) return false;
 
             return true;
-        }
-
-        //Helper method
-        private async Task<bool> MakeTransfer(User from, User to, double amount, int type)
-        {
-            try
-            {
-                Entities.Transaction transaction = new Entities.Transaction()
-                {
-                    TxId = Guid.NewGuid(),
-                    From = from.WalletAddress,
-                    To = to.WalletAddress,
-                    Amount = amount,
-                    TxDate = DateTime.Now,
-                    Type = type
-                };
-
-                from.Balance -= amount;
-                to.Balance += amount;
-
-                _db.Transactions.Add(transaction);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
         }
     }
 }

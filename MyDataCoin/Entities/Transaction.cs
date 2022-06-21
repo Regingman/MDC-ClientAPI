@@ -5,6 +5,12 @@ namespace MyDataCoin.Entities
 {
     public class Transaction
     {
+        /// <summary>
+        /// 1 - Ads,
+        /// 2 - Refferal,
+        /// 3 - Normal transaction
+        /// </summary>
+
         [Key]
         public Guid TxId { get; set; }
 
@@ -25,4 +31,5 @@ namespace MyDataCoin.Entities
         Refferal = 2,
         Send = 3
     }
+
 }

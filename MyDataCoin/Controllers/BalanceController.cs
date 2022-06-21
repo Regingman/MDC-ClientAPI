@@ -66,9 +66,9 @@ namespace MyDataCoin.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Entities.Transaction>))]
         [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpGet("transactions/{userid}")]
-        public async Task<IActionResult> GetTransactions(string userid)
+        public IActionResult GetTransactions(string userid)
         {
-            var result = await _BalanceService.GetTransactions(userid);
+            var result = _BalanceService.GetTransactions(userid);
             //if (result.Code == 421) return StatusCode(421, new GeneralResponse(421, "User Not Found"));
             //else return Ok(new GeneralResponse(200, "Success"));
             return Ok(result);
@@ -91,7 +91,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [HttpGet]
         [Route("advertising_rewards/{userid}")]
-        public async Task<IActionResult> Earn(string userid)
+        public async Task<IActionResult> Earn(string userid, double amount)
         {
             GeneralResponse response = await _BalanceService.AdvertisingRewards(userid);
 
@@ -168,7 +168,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(bool))]
         [HttpGet("validate/{address}")]
-        public IActionResult Validate(string address)
+        public async Task<IActionResult> Validate(string address)
         {
             if (string.IsNullOrEmpty(address)) return BadRequest("Address cannot be null");
             else

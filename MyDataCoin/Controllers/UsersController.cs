@@ -57,7 +57,7 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="401">Returns Unauthorized</response>
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Tokens))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
         [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [AllowAnonymous]
         [HttpPost]

@@ -29,7 +29,8 @@ namespace MyDataCoin.Interfaces
 
         int SaveCommit();
 
-
+        Task<string> GetTokenFromUserId(string userId);
+        Task<List<User>> GetAllUsersId();
         //Task<AuthenticateResponse> Registration(RegistrationRequest model);
 
         //Task<User> GetByEmail(string email);
