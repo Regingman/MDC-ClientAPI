@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MyDataCoin.Entities;
 using MyDataCoin.Models;
 
@@ -15,7 +14,7 @@ namespace MyDataCoin.Interfaces
 
         RefreshResponse Refresh(Tokens tokens);
 
-        Task<GeneralResponse> Mapping(string userid, AuthenticateRequest model);
+        Task<GeneralResponse> Mapping(string userid, MappingRequest model);
 
         Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid);
 

@@ -162,7 +162,7 @@ namespace MyDataCoin.Services
         }
 
 
-        public async Task<GeneralResponse> Mapping(string userid, AuthenticateRequest model)
+        public async Task<GeneralResponse> Mapping(string userid, MappingRequest model)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == Guid.Parse(userid));
 

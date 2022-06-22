@@ -33,9 +33,7 @@ namespace MyDataCoin.Controllers
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpGet]
         [Route("get_balance/{userid}")]
@@ -64,7 +62,6 @@ namespace MyDataCoin.Controllers
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Entities.Transaction>))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpGet("transactions/{userid}")]
         public async Task<IActionResult> GetTransactions(string userid)
         {
@@ -85,9 +82,7 @@ namespace MyDataCoin.Controllers
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpGet]
         [Route("advertising_rewards/{userid}")]
@@ -117,8 +112,6 @@ namespace MyDataCoin.Controllers
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(426, Type = typeof(GeneralResponse))]
         [HttpGet("promocode_rewards/{userid}/{promo}")]
         public async Task<IActionResult> InsertPromo(string userid, string promo)
         {

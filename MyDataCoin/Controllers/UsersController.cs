@@ -33,7 +33,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [AllowAnonymous]
         [HttpPost]
         [Route("auth")]
@@ -58,7 +57,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Tokens))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [AllowAnonymous]
         [HttpPost]
         [Route("refresh")]
@@ -84,12 +82,11 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="401">Returns Unauthorized</response>
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpPost]
         [Route("map/{userid}")]
-        public async Task<IActionResult> MapAccounts(string userid, [FromBody] AuthenticateRequest model)
+        public async Task<IActionResult> MapAccounts(string userid, [FromBody] MappingRequest model)
         {
             GeneralResponse response = await _userService.Mapping(userid, model);
 
@@ -111,7 +108,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpPost]
         [Route("upload_image")]
@@ -138,7 +134,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpPut("edit/{userid}")]
         public async Task<IActionResult> Edit(string userid, [FromBody] EditRequest user)
         {
