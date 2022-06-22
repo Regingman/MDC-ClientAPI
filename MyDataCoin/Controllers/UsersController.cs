@@ -81,6 +81,7 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="400">Returns Bad Request</response>
         /// <response code="401">Returns Unauthorized</response>
         /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="436">Returns Already Mapped</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
         [Authorize]
@@ -88,6 +89,8 @@ namespace NuzaiCore.Controllers.v2
         [Route("map/{userid}")]
         public async Task<IActionResult> MapAccounts(string userid, [FromBody] MappingRequest model)
         {
+            _logger.LogInformation($"Request from {model.Email}, {model.SocialId} and {model.SocialNetwork}");
+
             GeneralResponse response = await _userService.Mapping(userid, model);
 
             if (response.Code == 400)

@@ -166,10 +166,26 @@ namespace MyDataCoin.Services
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == Guid.Parse(userid));
 
-            if (model.SocialNetwork == "meta" && user.FacebookId == null) user.FacebookId = model.SocialId;
-            else if (model.SocialNetwork == "google" && user.GoogleId == null) user.GoogleId = model.SocialId;
-            else if (model.SocialNetwork == "apple" && user.AppleId == null) user.AppleId = model.SocialId;
-            else return new GeneralResponse(400, "Wrong Social Network parameter");
+            if (model.SocialNetwork == "meta" && user.FacebookId == null)
+                user.FacebookId = model.SocialId;
+
+            else if (model.SocialNetwork == "meta" && user.FacebookId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else if (model.SocialNetwork == "google" && user.GoogleId == null)
+                user.GoogleId = model.SocialId;
+
+            else if (model.SocialNetwork == "google" && user.GoogleId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else if (model.SocialNetwork == "apple" && user.AppleId == null)
+                user.AppleId = model.SocialId;
+
+            else if(model.SocialNetwork == "apple" && user.AppleId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else
+                return new GeneralResponse(400, "Wrong Social Network parameter");
 
 
             Email email = new Email()
