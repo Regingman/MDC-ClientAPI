@@ -10,10 +10,6 @@ namespace MyDataCoin.Models
         [Required(ErrorMessage = "SocialId cannot be null")]
         public string SocialId { get; set; }
 
-        /// <summary>
-		/// The user's email.
-		/// </summary>
-		/// <example>example@example.com</example>
         [EmailAddress(ErrorMessage = "Not a valid email")]
         [Required(ErrorMessage = "Email cannot be null")]
         public string Email { get; set; }
