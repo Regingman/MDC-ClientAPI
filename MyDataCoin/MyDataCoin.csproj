@@ -32,9 +32,14 @@
     <None Remove="FirebaseAuthentication.net" />
     <None Remove="Helpers\" />
     <None Remove="DotNetEnv" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
     <Folder Include="Entities\" />
     <Folder Include="DataAccess\" />
     <Folder Include="Helpers\" />
@@ -56,5 +61,6 @@
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="FirebaseAuthentication.net" Version="3.7.2" />
     <PackageReference Include="DotNetEnv" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
   </ItemGroup>
 </Project>
