@@ -12,16 +12,15 @@ namespace MyDataCoin.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class NotificationsController : ControllerBase
+    public class NotificationsController: ControllerBase
     {
         private readonly ILogger<NotificationsController> _logger;
-        private readonly IFireBase _fireBase;
+        private readonly INotification _BalanceService;
 
-        public NotificationsController(ILogger<NotificationsController> logger, IFireBase fireBase)
+        public NotificationsController(ILogger<NotificationsController> logger, INotification NotificationService)
         {
-            //_BalanceService = NotificationService;
+            _BalanceService = NotificationService;
             _logger = logger;
-            _fireBase = fireBase;
         }
 
         /// <summary>
@@ -42,35 +41,6 @@ namespace MyDataCoin.Controllers
         public IActionResult GetBalance(string userid)
         {
             return Ok();
-        }
-
-
-        /// <summary>
-        /// Send message to user
-        /// </summary>
-        /// <response code="200">Returns Success</response>
-        /// <response code="400">Returns Bad Request</response>
-        /// <response code="401">Returns Unauthorized</response>
-        /// <response code="404">Returns Not Found</response>
-        /// <response code="415">Returns Unsupported Media Type</response>
-        /// <response code="421">Returns User Not Found</response>
-        /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
-        //[Authorize]
-        [HttpPost]
-        [Route("SendMessageToUser")]
-        public async Task<IActionResult> SendMessageToUserAsync(FCMMessage message)
-        {
-            var response = await _fireBase.SendNotification(message);
-            switch (response.Code)
-            {
-                case 400: return BadRequest(response.Message);
-                case 421: return StatusCode(421, response.Message);
-                case 200: return Ok(response.Message);
-                default: return NotFound();
-            }
         }
     }
 }
