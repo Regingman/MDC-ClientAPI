@@ -34,6 +34,13 @@ namespace MyDataCoin
             var connectionString = DotNetEnv.Env.GetString("DB_CONNECTION", "Variable not found");
             services.AddDbContext<WebApiDbContext>(options => options.UseNpgsql(connectionString));
 
+
+            //services.AddIdentity<IdentityUser, IdentityRole>(options => {
+            //    options.Password.RequireUppercase = true; 
+            //    options.Password.RequireDigit = true;
+            //    options.SignIn.RequireConfirmedEmail = true;
+            //}).AddUserStore<WebApiDbContext>().AddDefaultTokenProviders();
+
             services.AddAuthentication(x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,10 +70,7 @@ namespace MyDataCoin
                 };
             });
 
-
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
@@ -88,10 +92,10 @@ namespace MyDataCoin
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            services.AddTransient<IUser, UserService>();
-            services.AddTransient<IBalance, BalanceService>();
-            services.AddSingleton<IJWTManager, JWTManagerService>();
-
+            services.AddScoped<IUser, UserService>();
+            services.AddScoped<IBalance, BalanceService>();
+            services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddScoped<IFireBase, FiresBaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

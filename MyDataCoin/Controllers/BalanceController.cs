@@ -33,7 +33,9 @@ namespace MyDataCoin.Controllers
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
+        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
+        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpGet]
         [Route("get_balance/{userid}")]
@@ -62,10 +64,11 @@ namespace MyDataCoin.Controllers
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(List<Entities.Transaction>))]
+        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpGet("transactions/{userid}")]
-        public async Task<IActionResult> GetTransactions(string userid)
+        public IActionResult GetTransactions(string userid)
         {
-            var result = await _BalanceService.GetTransactions(userid);
+            var result = _BalanceService.GetTransactions(userid);
             //if (result.Code == 421) return StatusCode(421, new GeneralResponse(421, "User Not Found"));
             //else return Ok(new GeneralResponse(200, "Success"));
             return Ok(result);
@@ -82,11 +85,13 @@ namespace MyDataCoin.Controllers
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
+        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
+        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpGet]
         [Route("advertising_rewards/{userid}")]
-        public async Task<IActionResult> Earn(string userid)
+        public async Task<IActionResult> Earn(string userid, double amount)
         {
             GeneralResponse response = await _BalanceService.AdvertisingRewards(userid);
 
@@ -112,6 +117,8 @@ namespace MyDataCoin.Controllers
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
+        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
+        [SwaggerResponse(426, Type = typeof(GeneralResponse))]
         [HttpGet("promocode_rewards/{userid}/{promo}")]
         public async Task<IActionResult> InsertPromo(string userid, string promo)
         {
@@ -161,7 +168,7 @@ namespace MyDataCoin.Controllers
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(bool))]
         [HttpGet("validate/{address}")]
-        public IActionResult Validate(string address)
+        public async Task<IActionResult> Validate(string address)
         {
             if (string.IsNullOrEmpty(address)) return BadRequest("Address cannot be null");
             else
