@@ -1,11 +1,11 @@
 ﻿using System;
 namespace MyDataCoin.Models
 {
-	public class UserForMainPageResponse
+	public class UserForMainPage
 	{
 		public string NickName { get; set; }
 
-		public string Photo { get; set; }
+		public string ProfilePic { get; set; }
 	}
 }
 
