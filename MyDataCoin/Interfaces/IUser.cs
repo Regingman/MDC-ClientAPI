@@ -18,6 +18,12 @@ namespace MyDataCoin.Interfaces
 
         Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid);
 
+        Task<UserForMainPage> GetById(string userid);
+
+        string GetPrivacy();
+
+        string GetTerms();
+
 
 
         UserRefreshTokens AddUserRefreshTokens(UserRefreshTokens user);

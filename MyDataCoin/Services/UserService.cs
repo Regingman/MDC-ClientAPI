@@ -302,5 +302,24 @@ namespace MyDataCoin.Services
             double refferedAmount = refferedUsers * 2.5;
             return new StatisticsOfRefferedPeopleModel(refferedUsers, refferedAmount);
         }
+
+        public async Task<UserForMainPage> GetById(string userid)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
+            UserForMainPage result = new UserForMainPage();
+            result.NickName = user.NickName;
+            result.ProfilePic = user.ProfilePic;
+            return result;
+        }
+
+        public string GetPrivacy()
+        {
+            return "<html><body><h1>This is Privacy Policy page</h1></body></html>";
+        }
+
+        public string GetTerms()
+        {
+            return "<html><body><h1>This is Privacy Policy page</h1></body></html>";
+        }
     }
 }
