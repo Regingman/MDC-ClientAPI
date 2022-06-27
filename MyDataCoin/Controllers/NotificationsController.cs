@@ -15,32 +15,40 @@ namespace MyDataCoin.Controllers
     public class NotificationsController: ControllerBase
     {
         private readonly ILogger<NotificationsController> _logger;
-        private readonly INotification _BalanceService;
+        private readonly INotification _notification;
 
-        public NotificationsController(ILogger<NotificationsController> logger, INotification NotificationService)
+        public NotificationsController(ILogger<NotificationsController> logger, INotification notification)
         {
-            _BalanceService = NotificationService;
+            _notification = notification;
             _logger = logger;
         }
 
         /// <summary>
-        /// Get user's current balance
+        /// Send message to user
         /// </summary>
         /// <response code="200">Returns Success</response>
         /// <response code="400">Returns Bad Request</response>
         /// <response code="401">Returns Unauthorized</response>
+        /// <response code="404">Returns Not Found</response>
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="421">Returns User Not Found</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
         [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [SwaggerResponse(421, Type = typeof(GeneralResponse))]
-        [Authorize]
-        [HttpGet]
-        [Route("get_balance/{userid}")]
-        public IActionResult GetBalance(string userid)
+        //[Authorize]
+        [HttpPost]
+        [Route("SendMessageToUser")]
+        public async Task<IActionResult> SendMessageToUserAsync(FCMMessage message)
         {
-            return Ok();
+            var response = await _notification.SendNotification(message);
+            switch (response.Code)
+            {
+                case 400: return BadRequest(response.Message);
+                case 421: return StatusCode(421, response.Message);
+                case 200: return Ok(response.Message);
+                default: return NotFound();
+            }
         }
     }
 }

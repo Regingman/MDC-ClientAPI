@@ -9,6 +9,7 @@ using MyDataCoin.Helpers;
 using MyDataCoin.Interfaces;
 using MyDataCoin.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -294,7 +295,19 @@ namespace MyDataCoin.Services
         }
 
 
-        
+        public async Task<string> GetTokenFromUserId(string userId)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
+            return user.FCMToken;
+        }
+
+        public async Task<List<Entities.User>> GetAllUsersId()
+        {
+            var users = await _db.Users.ToListAsync();
+            return users;
+        }
+
+
         public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
         {
             Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));

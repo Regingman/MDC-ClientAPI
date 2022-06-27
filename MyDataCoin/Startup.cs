@@ -88,8 +88,9 @@ namespace MyDataCoin
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            services.AddTransient<IUser, UserService>();
-            services.AddTransient<IBalance, BalanceService>();
+            services.AddScoped<IUser, UserService>();
+            services.AddScoped<IBalance, BalanceService>();
+            services.AddScoped<INotification, NotificationService>();
             services.AddSingleton<IJWTManager, JWTManagerService>();
 
         }

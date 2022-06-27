@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MyDataCoin.Entities;
 using MyDataCoin.Models;
 
@@ -19,6 +20,10 @@ namespace MyDataCoin.Interfaces
         Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid);
 
         Task<UserForMainPage> GetById(string userid);
+
+        Task<string> GetTokenFromUserId(string userId);
+
+        Task<List<User>> GetAllUsersId();
 
         string GetPrivacy();
 
