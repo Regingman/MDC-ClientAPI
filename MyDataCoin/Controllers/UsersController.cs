@@ -38,6 +38,7 @@ namespace NuzaiCore.Controllers.v2
         [Route("auth")]
         public async Task<IActionResult> Authenticate([FromBody]AuthenticateRequest model)
         {
+            _logger.LogInformation($"Auth request with {model.Email} and {model.SocialId}, {model.SocialNetwork} and {model.NickName}");
             AuthenticateResponse response = await _userService.Authenticate(model);
 
             if (response.Code == 400)
@@ -89,7 +90,7 @@ namespace NuzaiCore.Controllers.v2
         [Route("map/{userid}")]
         public async Task<IActionResult> MapAccounts(string userid, [FromBody] MappingRequest model)
         {
-            _logger.LogInformation($"Request from {model.Email}, {model.SocialId} and {model.SocialNetwork}");
+            _logger.LogInformation($"Request from Mapping with data {model.Email}, {model.SocialId} and {model.SocialNetwork}");
 
             GeneralResponse response = await _userService.Mapping(userid, model);
 
