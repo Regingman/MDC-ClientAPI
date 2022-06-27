@@ -14,7 +14,6 @@ namespace MyDataCoin.Interfaces
 
 		// TODO: реализовать модель истории монетизации
 		public Task<MonetizationModel> GetTotalMonetizationStatAsync(string email);
-
 	}
 }
 
