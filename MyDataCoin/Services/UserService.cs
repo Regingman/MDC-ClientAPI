@@ -64,27 +64,18 @@ namespace MyDataCoin.Services
                     SaveCommit();
 
                     var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == existingUser.UserId);
-                    return new AuthenticateResponse(200, "Success", new AuthBody(user, token));
+
+                    if(user != null)
+                        return new AuthenticateResponse(200, "Success", new AuthBody(user, token));
+                    else
+                    {
+                        var newUser = StaticFunctions.CreateUser(model);
+                        return new AuthenticateResponse(200, "Success", new AuthBody(newUser, token));
+                    }
                 }
                 else
                 {
-                    var user = new Entities.User();
-
-                    string walletAddress = $"mdc{StaticFunctions.GeneratePromoCode(17)}";
-
-                    if (model.SocialNetwork == "meta") user.FacebookId = model.SocialId;
-                    else if (model.SocialNetwork == "google") user.GoogleId = model.SocialId;
-                    else if (model.SocialNetwork == "apple") user.AppleId = model.SocialId;
-                    else return new AuthenticateResponse(400, "Wrong Social Network parameter");
-
-                    user.Id = Guid.NewGuid();
-                    user.NickName = model.NickName;
-                    user.CreatedAt = DateTime.UtcNow;
-                    user.DeviceId = model.DeviceId;
-                    user.Balance = 0;
-                    user.WalletAddress = walletAddress;
-                    user.RefCode = StaticFunctions.GeneratePromoCode(8);
-                    user.FCMToken = model.FCMToken;
+                    var user = StaticFunctions.CreateUser(model);
 
                     await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
