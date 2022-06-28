@@ -320,49 +320,92 @@ namespace MyDataCoin.Services
         {
             return @"<html><body>
 
-                        <h4>MyDataCoin Privacy Policy</h4>
-                        <p>MyDataCoin(“us”, “we”, or “our”) operates the http://www.mydatacoin.io website (the “Service”).</p>
-                        <p>This page informs you of our policies regarding collecting, using, and disclosing personal data when you use our Service and the choices you have associated with that data.</p>
-                        <p>We use your data to provide and improve the Service. By using the Service, you agree to collect and use information under this policy.Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from http://www.mydatacoin.io</p>
+                    <h4>MyDataCoin Privacy Policy</h4>
+                    <p>MyDataCoin(“us”, “we”, or “our”) operates the http://www.mydatacoin.io website (the “Service”).</p>
+                    <p>This page informs you of our policies regarding collecting, using, and disclosing personal data when you use our Service and the choices you have associated with that data.</p>
+                    <p>We use your data to provide and improve the Service. By using the Service, you agree to collect and use information under this policy.Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from http://www.mydatacoin.io</p>
 
-                        <h4>Your Data Protection Rights Under General Data Protection Regulation (GDPR)</h4>
-                        <p>If you are a resident of the European Economic Area (EEA), you have certain data protection rights. myData.coin aims to take reasonable steps to allow you to correct, amend, delete, or limit the use of your Personal Data.</p>
-                        <p>If you wish to be informed what Personal Data we hold about you and if you want it to be removed from our systems, please contact us.</p>
-                        <p>In certain circumstances, you have the following data protection rights:</p>
-                        <p>• The right to access, update or to delete the information we have on you. Whenever made possible, you can access, update or request deletion of your Personal Data directly within your account settings section. If you are unable to perform these actions yourself, please contact us to assist you.</p>
-                        <p>• The right of rectification. You have the right to have your information rectified if that information is inaccurate or incomplete.</p>
-                        <p>• The right to object. You have the right to object to our processing of your Personal Data.</p>
-                        <p>• The right of restriction. You have the right to request that we restrict the processing of your personal information.</p>
-                        <p>• The right to data portability. You have the right to be provided with a copy of the information we have on you in a structured, machine-readable and commonly used format.</p>
-                        <p>• The right to withdraw consent. You also have the right to withdraw your consent at any time where myData.coin relied on your consent to process your personal information.</p>
-                        <p>Please note that we may ask you to verify your identity before responding to such requests.</p>
-                        <p>You have the right to complain to a Data Protection Authority about our collection and use of your Personal Data. For more information, please contact your local data protection authority in the European Economic Area (EEA).</p>
+                    <br/>
+                    <h4>Your Data Protection Rights Under General Data Protection Regulation (GDPR)</h4>
+                    <p>If you are a resident of the European Economic Area (EEA), you have certain data protection rights. myData.coin aims to take reasonable steps to allow you to correct, amend, delete, or limit the use of your Personal Data.</p>
+                    <p>If you wish to be informed what Personal Data we hold about you and if you want it to be removed from our systems, please contact us.</p>
+                    <p>In certain circumstances, you have the following data protection rights:</p>
+                    <p>• The right to access, update or to delete the information we have on you. Whenever made possible, you can access, update or request deletion of your Personal Data directly within your account settings section. If you are unable to perform these actions yourself, please contact us to assist you.</p>
+                    <p>• The right of rectification. You have the right to have your information rectified if that information is inaccurate or incomplete.</p>
+                    <p>• The right to object. You have the right to object to our processing of your Personal Data.</p>
+                    <p>• The right of restriction. You have the right to request that we restrict the processing of your personal information.</p>
+                    <p>• The right to data portability. You have the right to be provided with a copy of the information we have on you in a structured, machine-readable and commonly used format.</p>
+                    <p>• The right to withdraw consent. You also have the right to withdraw your consent at any time where myData.coin relied on your consent to process your personal information.</p>
+                    <p>Please note that we may ask you to verify your identity before responding to such requests.</p>
+                    <p>You have the right to complain to a Data Protection Authority about our collection and use of your Personal Data. For more information, please contact your local data protection authority in the European Economic Area (EEA).</p>
 
-                        <h4>Service Providers</h4>
-                        <p> We may employ third party companies and individuals to facilitate our Service(“Service Providers”), to provide the Service on our behalf, to perform Service - related services or to assist us in analyzing how our Service is used.
-                                These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
+                    <br/>
+                    <h4>Service Providers</h4>
+                    <p> We may employ third party companies and individuals to facilitate our Service(“Service Providers”), to provide the Service on our behalf, to perform Service - related services or to assist us in analyzing how our Service is used.
+                            These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
 
-                        <h4>Analytics</h4>
-                        <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>
-                        <p>• Google Analytics</p>
-                        <p>• Google Analytics is a web analytics service offered by Google that tracks and reports website traffic. Google uses the data collected to track and monitor the use of our Service. This data is shared with other Google services. Google may use the collected data to contextualize and personalize the ads of its own advertising network.</p>
-                        <p>• You can opt-out of having made your activity on the Service available to Google Analytics by installing the Google Analytics opt- out browser add-on. The add-on prevents the Google Analytics JavaScript (ga.js, analytics.js, and dc.js) from sharing information with Google Analytics about visits activity. For more information on the privacy practices of Google, please visit the Google Privacy & Terms web page: http://www.google.com/intl/en/policies/ privacy</p>
+                    <br/>
+                    <h4>Analytics</h4>
+                    <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>
+                    <p>• Google Analytics</p>
+                    <p>• Google Analytics is a web analytics service offered by Google that tracks and reports website traffic. Google uses the data collected to track and monitor the use of our Service. This data is shared with other Google services. Google may use the collected data to contextualize and personalize the ads of its own advertising network.</p>
+                    <p>• You can opt-out of having made your activity on the Service available to Google Analytics by installing the Google Analytics opt- out browser add-on. The add-on prevents the Google Analytics JavaScript (ga.js, analytics.js, and dc.js) from sharing information with Google Analytics about visits activity. For more information on the privacy practices of Google, please visit the Google Privacy & Terms web page: http://www.google.com/intl/en/policies/ privacy</p>
 
-                        <h4>Children’s Privacy</h4>
-                        <p>Our Service does not address anyone under the age of 18 (“Children”). We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your Children has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
-                    
-                        <h4>Changes To This Privacy Policy</h4>
-                        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
-                        <p>We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update the “effective date” at the top of this Privacy Policy.</p>
-                        <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-                    
+                    <br/>
+                    <h4>Children’s Privacy</h4>
+                    <p>Our Service does not address anyone under the age of 18 (“Children”). We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your Children has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
 
-    </ body></html>";
+                    <br/>
+                    <h4>Changes To This Privacy Policy</h4>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+                    <p>We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update the “effective date” at the top of this Privacy Policy.</p>
+                    <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+                    <br/><p>Latest update: 1 April 2022</p>
+
+                    </ body></html>";
         }
 
         public string GetTerms()
         {
-            return "<html><body><h1>This is Privacy Policy page</h1></body></html>";
+            return @"<html><body>
+
+                    <h4>Terms</h4>
+                    <p>By accessing the website at mydatacoin.io, you agree to be bound by these terms of service, all applicable laws, and regulations and agree that you are responsible for compliance with any applicable local laws. If you do not agree with these terms, you are prohibited from using or accessing this site. In addition, the materials contained in this website are protected by applicable copyright and trademark law.</p>
+
+
+                    <br/>
+                    <h4>Use License</h4>
+                    <p>Permission is granted to temporarily download one copy of the materials (information or software) on myData.coin's website for only personal, non-commercial transitory viewing. This is the grant of a license, not a transfer of title, and under this license, you may not:</p>
+                    <p>• Modify or copy the materials</p>
+                    <p>• Use the materials for any commercial purpose, or any public display (commercial or non-commercial)</p>
+                    <p>• Attempt to decompile or reverse engineer any software contained on MyDataCoin's website;</p>
+                    <p>• Transfer the materials to another person or “mirror” the materials on any other server</p>
+                    <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by myData.coin at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
+
+                    <br/>
+                    <h4>Disclaimer</h4>
+                    <p>The materials on MyDataCoin's website are provided on an 'as is' basis. myData.coin makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                    <p>Further, MyDataCoin does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</p>
+                    
+                    <br/>
+                    <h4>Limitations</h4>
+                    <p>In no event shall myData.coin or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on MyDataCoin's website, even if myData.coin or a myData.coin authorised representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
+
+                    <br/>
+                    <h4>Links</h4>
+                    <p>MyDataCoin has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by MyDataCoin of the site. Use of any such linked website is at the user's own risk. </p>
+
+                    <br/>
+                    <h4>Modifications</h4>
+                    <p>MyDataCoin may revise these terms of service for its website at any time without notice. By using this website, you agree to be bound by the then current version of these terms of service.</p>
+                    
+                    <br/>
+                    <h4>Governing Law</h4>
+                    <p>MyDataCoin may revise these terms of service for its website at any time without notice. By using this website, you agree to be bound by the then current version of these terms of service.</p>
+
+                    <br/><p>Latest update: 1 April 2022</p>
+
+                    </body></html>";
         }
     }
 }
