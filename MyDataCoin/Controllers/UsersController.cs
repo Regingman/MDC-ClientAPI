@@ -33,12 +33,12 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [AllowAnonymous]
         [HttpPost]
         [Route("auth")]
         public async Task<IActionResult> Authenticate([FromBody]AuthenticateRequest model)
         {
+            _logger.LogInformation($"Auth request with {model.Email} and {model.SocialId}, {model.SocialNetwork} and {model.NickName}");
             AuthenticateResponse response = await _userService.Authenticate(model);
 
             if (response.Code == 400)
@@ -57,8 +57,7 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="401">Returns Unauthorized</response>
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Tokens))]
         [AllowAnonymous]
         [HttpPost]
         [Route("refresh")]
@@ -83,14 +82,16 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="400">Returns Bad Request</response>
         /// <response code="401">Returns Unauthorized</response>
         /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="436">Returns Already Mapped</response>
         /// <response code="500">Returns Internal Server Error</response>
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpPost]
         [Route("map/{userid}")]
-        public async Task<IActionResult> MapAccounts(string userid, [FromBody] AuthenticateRequest model)
+        public async Task<IActionResult> MapAccounts(string userid, [FromBody] MappingRequest model)
         {
+            _logger.LogInformation($"Request from Mapping with data {model.Email}, {model.SocialId} and {model.SocialNetwork}");
+
             GeneralResponse response = await _userService.Mapping(userid, model);
 
             if (response.Code == 400)
@@ -111,7 +112,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="415">Returns Unsupported Media Type</response>
         /// <response code="500">Returns Internal Server Error</response>
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(AuthenticateResponse))]
-        [SwaggerResponse((int)HttpStatusCode.Unauthorized, Type = typeof(GeneralResponse))]
         [Authorize]
         [HttpPost]
         [Route("upload_image")]
@@ -138,7 +138,6 @@ namespace NuzaiCore.Controllers.v2
         /// <response code="500">Returns Internal Server Error</response>
         [Authorize]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(GeneralResponse))]
-        [SwaggerResponse(421, Type = typeof(GeneralResponse))]
         [HttpPut("edit/{userid}")]
         public async Task<IActionResult> Edit(string userid, [FromBody] EditRequest user)
         {
@@ -163,6 +162,63 @@ namespace NuzaiCore.Controllers.v2
         public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
         {
             return await _userService.GetRefferedPeople(userid);
+        }
+
+
+        /// <summary>
+        /// Get user for main page by id
+        /// </summary>
+        /// <response code="200">Returns UserForMainPage Model</response>
+        /// <response code="400">Returns Bad Request</response>
+        /// <response code="401">Returns Unauthorized</response>
+        /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="436">Returns Already Mapped</response>
+        /// <response code="500">Returns Internal Server Error</response>
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(UserForMainPage))]
+        [Authorize]
+        [HttpGet]
+        [Route("getbyid/{userid}")]
+        public async Task<IActionResult> GetById(string userid)
+        {
+            var response = await _userService.GetById(userid);
+            return Ok(response);
+        }
+
+
+        /// <summary>
+        /// Get Privacy Policy page
+        /// </summary>
+        /// <response code="200">Returns Privacy Policy page</response>
+        /// <response code="400">Returns Bad Request</response>
+        /// <response code="401">Returns Unauthorized</response>
+        /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="436">Returns Already Mapped</response>
+        /// <response code="500">Returns Internal Server Error</response>
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(string))]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("privacy")]
+        public string GetPrivacy()
+        {
+            return _userService.GetPrivacy();
+        }
+
+        /// <summary>
+        /// Get Privacy Terms Of Services page
+        /// </summary>
+        /// <response code="200">Returns UserForMainPage Model</response>
+        /// <response code="400">Returns Bad Request</response>
+        /// <response code="401">Returns Unauthorized</response>
+        /// <response code="415">Returns Unsupported Media Type</response>
+        /// <response code="436">Returns Already Mapped</response>
+        /// <response code="500">Returns Internal Server Error</response>
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(string))]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("terms")]
+        public string GetTerms()
+        {
+            return _userService.GetTerms();
         }
     }
 }

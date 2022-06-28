@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,14 +22,14 @@ namespace MyDataCoin.Services
         private readonly WebApiDbContext _db;
         private readonly IConfiguration _conf;
         private readonly ILogger<UserService> _logger;
-        private readonly IJWTManagerRepository _jWTManager;
+        private readonly IJWTManager _jWTManager;
 
         private static string ApiKey = Environment.GetEnvironmentVariable("G_API_KEY");
         private static string Bucket = "mydatacoin.appspot.com";
         private static string AuthEmail = "img@gmail.com";
         private static string AuthPassword = Environment.GetEnvironmentVariable("G_API_PASSWORD");
 
-        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManagerRepository jWTManager)
+        public UserService(WebApiDbContext db, IConfiguration conf, ILogger<UserService> logger, IJWTManager jWTManager)
         {
             _db = db;
             _conf = conf;
@@ -64,27 +64,18 @@ namespace MyDataCoin.Services
                     SaveCommit();
 
                     var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == existingUser.UserId);
-                    return new AuthenticateResponse(200, "Success", new AuthBody(user, token));
+
+                    if(user != null)
+                        return new AuthenticateResponse(200, "Success", new AuthBody(user, token));
+                    else
+                    {
+                        var newUser = StaticFunctions.CreateUser(model);
+                        return new AuthenticateResponse(200, "Success", new AuthBody(newUser, token));
+                    }
                 }
                 else
                 {
-                    var user = new Entities.User();
-
-                    string walletAddress = $"mdc{StaticFunctions.GeneratePromoCode(17)}";
-
-                    if (model.SocialNetwork == "meta") user.FacebookId = model.SocialId;
-                    else if (model.SocialNetwork == "google") user.GoogleId = model.SocialId;
-                    else if (model.SocialNetwork == "apple") user.AppleId = model.SocialId;
-                    else return new AuthenticateResponse(400, "Wrong Social Network parameter");
-
-                    user.Id = Guid.NewGuid();
-                    user.NickName = model.NickName;
-                    user.CreatedAt = DateTime.UtcNow;
-                    user.DeviceId = model.DeviceId;
-                    user.Balance = 0;
-                    user.WalletAddress = walletAddress;
-                    user.RefCode = StaticFunctions.GeneratePromoCode(8);
-                    user.FCMToken = model.FCMToken;
+                    var user = StaticFunctions.CreateUser(model);
 
                     await _db.Users.AddAsync(user);
                     await _db.SaveChangesAsync();
@@ -163,14 +154,30 @@ namespace MyDataCoin.Services
         }
 
 
-        public async Task<GeneralResponse> Mapping(string userid, AuthenticateRequest model)
+        public async Task<GeneralResponse> Mapping(string userid, MappingRequest model)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == Guid.Parse(userid));
 
-            if (model.SocialNetwork == "meta" && user.FacebookId == null) user.FacebookId = model.SocialId;
-            else if (model.SocialNetwork == "google" && user.GoogleId == null) user.GoogleId = model.SocialId;
-            else if (model.SocialNetwork == "apple" && user.AppleId == null) user.AppleId = model.SocialId;
-            else return new GeneralResponse(400, "Wrong Social Network parameter");
+            if (model.SocialNetwork == "meta" && user.FacebookId == null)
+                user.FacebookId = model.SocialId;
+
+            else if (model.SocialNetwork == "meta" && user.FacebookId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else if (model.SocialNetwork == "google" && user.GoogleId == null)
+                user.GoogleId = model.SocialId;
+
+            else if (model.SocialNetwork == "google" && user.GoogleId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else if (model.SocialNetwork == "apple" && user.AppleId == null)
+                user.AppleId = model.SocialId;
+
+            else if(model.SocialNetwork == "apple" && user.AppleId != null)
+                return new GeneralResponse(436, "Already Mapped");
+
+            else
+                return new GeneralResponse(400, "Wrong Social Network parameter");
 
 
             Email email = new Email()
@@ -217,13 +224,15 @@ namespace MyDataCoin.Services
                 // error during upload will be thrown when you await the task
                 //Console.WriteLine("Download link:\n" + await task);
                 Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(model.UserId));
-                user.ProfilePic = task.TargetUrl;
+                
 
                 string add = $"?alt=media&token={Environment.GetEnvironmentVariable("G_IMAGE_TOKEN")}";
 
                 string[] words = task.TargetUrl.Split('?');
                 string[] words2 = words[1].Split('=');
                 string finalString = words[0] + "/" + words2[1] + add;
+
+                user.ProfilePic = finalString;
 
                 await _db.SaveChangesAsync();
                 return new GeneralResponse(200, finalString);
@@ -277,6 +286,18 @@ namespace MyDataCoin.Services
         }
 
 
+        public async Task<string> GetTokenFromUserId(string userId)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
+            return user.FCMToken;
+        }
+
+        public async Task<List<Entities.User>> GetAllUsersId()
+        {
+            var users = await _db.Users.ToListAsync();
+            return users;
+        }
+
 
         public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
         {
@@ -303,6 +324,26 @@ namespace MyDataCoin.Services
         {
             var users = await _db.Users.ToListAsync();
             return users;
+        }
+
+
+        public async Task<UserForMainPage> GetById(string userid)
+        {
+            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
+            UserForMainPage result = new UserForMainPage();
+            result.NickName = user.NickName;
+            result.ProfilePic = user.ProfilePic;
+            return result;
+        }
+
+        public string GetPrivacy()
+        {
+            return "<html><body><h1>This is Privacy Policy page</h1></body></html>";
+        }
+
+        public string GetTerms()
+        {
+            return "<html><body><h1>This is Privacy Policy page</h1></body></html>";
         }
     }
 }

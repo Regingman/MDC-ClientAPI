@@ -1,4 +1,5 @@
-﻿namespace MyDataCoin.Models
+﻿using System;
+namespace MyDataCoin.Models
 {
     /// <summary>
     /// FCMMessage class for sending messages to the user 
@@ -19,3 +20,4 @@
         public string UserId { get; set; }
     }
 }
+
