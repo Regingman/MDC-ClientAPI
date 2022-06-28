@@ -50,7 +50,7 @@ namespace MyDataCoin.Services
 
                     if (token == null)
                     {
-                        return new AuthenticateResponse(401,"Invalid Attempt!");
+                        return new AuthenticateResponse(401, "Invalid Attempt!");
                     }
 
                     // saving refresh token to the db
@@ -121,7 +121,7 @@ namespace MyDataCoin.Services
                     return new AuthenticateResponse(200, "Success", new AuthBody(user, token));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new AuthenticateResponse(400, ex.InnerException.Message);
             }
@@ -277,7 +277,7 @@ namespace MyDataCoin.Services
         }
 
 
-        
+
         public async Task<StatisticsOfRefferedPeopleModel> GetRefferedPeople(string userid)
         {
             Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userid));
@@ -288,8 +288,15 @@ namespace MyDataCoin.Services
 
         public async Task<string> GetTokenFromUserId(string userId)
         {
-            Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
-            return user.FCMToken;
+            try
+            {
+                Entities.User user = await _db.Users.SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
+                return user.FCMToken;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<List<Entities.User>> GetAllUsersId()
